@@ -1,5 +1,4 @@
 import os
-import re
 import sys
 import json
 import time
@@ -31,7 +30,8 @@ def save_checkpoint(model, optimizer, epoch, loss):
     filename = os.path.join(CKPTS_FILE, 'model-{:0.2f}.pth.tar'.format(loss))
     state = {'epoch': epoch + 1,
              'state_dict': model.state_dict(),
-             'optimizer': optimizer.state_dict()}
+             'optimizer': optimizer.state_dict(),
+             'loss': loss}
     torch.save(state, filename)
 
 
@@ -40,7 +40,8 @@ def load_checkpoint(model, optimizer, filename, device):
     start_epoch = ckpt['epoch']
     model.load_state_dict(ckpt['state_dict'])
     optimizer.load_state_dict(ckpt['optimizer'])
-    return model.to(device), optimizer, start_epoch
+    loss = ckpt['loss']
+    return model.to(device), optimizer, loss, start_epoch
 
 
 def main(args):
@@ -68,11 +69,10 @@ def main(args):
     # Continue training after checkpoint
     if args.pretrained:
         logging.info('Loading checkpoint from {}'.format(args.pretrained))
-        model, optim, START_EPOCH = load_checkpoint(
+        model, optim, best_pred, START_EPOCH = load_checkpoint(
             model, optim, args.pretrained, device)
         logging.info('Continue training at epoch {}'.format(START_EPOCH))
         # Replace best_pred with loss of ckpt model
-        best_pred = float(re.findall(r'[0-9]*\.[0-9]*', args.pretrained)[0])
         logging.debug('Best pred is {:0.2f}'.format(best_pred))
         # Update metrics
         with open('data/loss_data.json') as infile:
