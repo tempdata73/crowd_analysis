@@ -35,12 +35,12 @@ def save_checkpoint(model, optimizer, epoch, loss):
     torch.save(state, filename)
 
 
-def load_checkpoint(model, optimizer, filename):
-    ckpt = torch.load(filename)
+def load_checkpoint(model, optimizer, filename, device):
+    ckpt = torch.load(filename, map_location=device)
     start_epoch = ckpt['epoch']
     model.load_state_dict(ckpt['state_dict'])
     optimizer.load_state_dict(ckpt['optimizer'])
-    return model, optimizer, start_epoch
+    return model.to(device), optimizer, start_epoch
 
 
 def main(args):
@@ -69,11 +69,11 @@ def main(args):
     if args.pretrained:
         logging.info('Loading checkpoint from {}'.format(args.pretrained))
         model, optim, START_EPOCH = load_checkpoint(
-            model, optim, args.pretrained)
-        model.to(device)
+            model, optim, args.pretrained, device)
         logging.info('Continue training at epoch {}'.format(START_EPOCH))
         # Replace best_pred with loss of ckpt model
-        best_pred = float(re.findall(r'[0-9].[0-9]*', args.pretrained)[0])
+        best_pred = float(re.findall(r'[0-9]*\.[0-9]*', args.pretrained)[0])
+        logging.debug('Best pred is {:0.2f}'.format(best_pred))
         # Update metrics
         with open('data/loss_data.json') as infile:
             loss_data = json.load(infile)
@@ -173,5 +173,5 @@ def parse_arguments(argv):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     main(parse_arguments(sys.argv[1:]))
