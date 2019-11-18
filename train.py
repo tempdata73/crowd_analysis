@@ -153,9 +153,10 @@ def main(args):
         loss_data['train_mae'].append(np.mean(loss_info))
         loss_data['val_mae'].append(mae)
 
-    with open('data/loss_data.json', 'w') as outfile:
-        logging.info('Saving loss data in data/loss_data.json')
-        json.dump(loss_data, outfile)
+        # Save data
+        with open('data/loss_data.json', 'w') as outfile:
+            logging.info('Saving loss data in data/loss_data.json')
+            json.dump(loss_data, outfile)
 
     # Save last model
     torch.save(model.state_dict(), os.path.join(CKPTS_FILE, 'model.pth.tar'))
