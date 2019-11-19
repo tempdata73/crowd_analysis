@@ -3,3 +3,7 @@ tmp/*
 utils/__pycache__/*
 Shanghai/*
 .gitattributes
+images/visualize.ipynb
+ckpts/model_*
+data/loss_data_*
+data/metrics_*
