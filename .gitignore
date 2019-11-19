@@ -4,6 +4,7 @@ utils/__pycache__/*
 Shanghai/*
 .gitattributes
 images/visualize.ipynb
+images/.*
 ckpts/model_*
 data/loss_data_*
 data/metrics_*
