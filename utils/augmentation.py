@@ -10,10 +10,10 @@ from torch.utils.data import Dataset, DataLoader
 
 class CrowdEstimationDataset(Dataset):
 
-    def __init__(self, image_paths, mode, transform=None):
+    def __init__(self, image_paths, augment=False, transform=None):
         self.image_paths = image_paths
         self.transform = transform
-        self.mode = mode
+        self.augment = augment
 
     def __len__(self):
         return len(self.image_paths)
@@ -31,7 +31,7 @@ class CrowdEstimationDataset(Dataset):
         target = np.asarray(target_file['density'])
 
         # Fetch random patch on training
-        if self.mode == 'training' and random.randint(0, 1):
+        if self.augment and random.randint(0, 1):
             image, target = self._get_random_crop(image, target)
 
         # Density map must be one eighth of original image
@@ -69,11 +69,12 @@ class CrowdEstimationDataset(Dataset):
         return cropped_image, cropped_target
 
 
-def create_dataloader(image_paths, mode, **kwargs):
+def create_dataloader(image_paths, augment=False, **kwargs):
     preprocessing = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
-    transformed_dataset = CrowdEstimationDataset(image_paths, mode, preprocessing)
+    transformed_dataset = CrowdEstimationDataset(
+        image_paths, augment=False, transform=preprocessing)
     dataloader = DataLoader(transformed_dataset, **kwargs)
     return dataloader
 

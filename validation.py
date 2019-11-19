@@ -21,7 +21,7 @@ def main(args):
     with open(args.test_json) as infile:
         image_paths = json.load(infile)
     test_loader = create_dataloader(
-        image_paths, 'validation', batch_size=1, shuffle=True)
+        image_paths, augment=False, batch_size=1, shuffle=True)
     logging.info('Evaluating on {} images'.format(len(test_loader)))
 
     # Load model

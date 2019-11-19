@@ -78,12 +78,16 @@ def main(args):
         with open('data/loss_data.json') as infile:
             loss_data = json.load(infile)
 
+    # Logging info
+    if args.augment:
+        logging.info('Augmenting training data')
+
     # Training + evaluation
     logging.info('Training model')
     for epoch in range(START_EPOCH, EPOCHS):
         model.train()  # Training mode
-        train_loader = create_dataloader(
-            train_image_paths, 'validation', batch_size=BATCH_SIZE, shuffle=True)
+        train_loader = create_dataloader(train_image_paths, augment=args.augment,
+                                         batch_size=BATCH_SIZE, shuffle=True)
         # Metrics
         time_info = []
         loss_info = []
@@ -124,7 +128,7 @@ def main(args):
         logging.info('Evaluating model...')
         model.eval()  # Evaluation mode
         val_loader = create_dataloader(
-            val_image_paths, 'validation', batch_size=BATCH_SIZE, shuffle=True)
+            val_image_paths, augment=False, batch_size=BATCH_SIZE, shuffle=True)
 
         mae = 0
         for image, target in val_loader:
@@ -168,6 +172,8 @@ def parse_arguments(argv):
     parser.add_argument('val_json', type=str, help='Path to val.json')
     parser.add_argument('--pretrained', '-p', type=str, default=None,
                         help='Continue training after checkpoint with model.pth.tar')
+    parser.add_argument('--augment', '-a', type=bool, default=False,
+                        help='Do dataset augmentation ont training data')
 
     return parser.parse_args()
 
