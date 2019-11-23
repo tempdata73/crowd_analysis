@@ -2,7 +2,7 @@
 
 Train a Congested Scene Recognition network (CSRNet) using the methodology of [the paper](https://arxiv.org/pdf/1802.10062.pdf). This repo is an updated version from the other ones as it works on Python 3.7 and fixes some inconsistencies from the [original repo](https://github.com/leeyeehoo/CSRNet-pytorch).
 
-If you wish to train the model from scratch, you can do so with [this Colab notebook](https://colab.research.google.com/drive/1OLB5xp14I0VAJ8-SjeDyFnc58nBZyMgE#scrollTo=rJ6-XWCrx2-d), or just download the models provided in the Experiments section.
+If you wish to train the model from scratch, you can do so with the provided Colab notebook.
 
 ## Context
 
@@ -29,7 +29,7 @@ For the moment only the ShanghaiTech dataset (both parts A and B) is available f
 - [ ] Trancos: [Webpage](http://agamenon.tsc.uah.es/Personales/rlopez/data/trancos/)
 
 ## Training and data generation
-Model training supports both GPU and CPU, the former being recommended. If you wish to train the model from sratch then you can use [this notebook](https://colab.research.google.com/drive/1OLB5xp14I0VAJ8-SjeDyFnc58nBZyMgE#scrollTo=e1Mg8BGZLEZo) or clone this repo, download a dataset (e.g. Shanghai dataset) and do:
+Model training supports both GPU and CPU, the former being recommended. If you wish to train the model from sratch then you can use the provided Colab notebook or clone this repo, download a dataset (e.g. Shanghai dataset) and do:
 ```console
 foo@bar:crowd_estimation$ mv path/to/dataset_folder Shanghai
 foo@bar:crowd_estimation$ python make_dataset.py Shanghai/ Shanghai_A
