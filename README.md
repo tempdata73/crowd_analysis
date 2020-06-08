@@ -1,5 +1,8 @@
 # Crowd estimation: CSRNet
 
+**Update 08-06-2020:**
+- Fixed broken link to dataset. I tried to upload the weights but they're too heavy for Github to handle. You can train the model and download it by just running the Colab notebook.
+
 Train a Congested Scene Recognition network (CSRNet) using the methodology of [the paper](https://arxiv.org/pdf/1802.10062.pdf). This repo is an updated version from the other ones as it works on Python 3.7 and fixes some inconsistencies from the [original repo](https://github.com/leeyeehoo/CSRNet-pytorch).
 
 If you wish to train the model from scratch, you can do so with the provided Colab notebook.
